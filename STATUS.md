@@ -114,13 +114,59 @@ Detail riset & alasan lengkap: `docs/RESEARCH-DESIGN.md`.
   https://github.com/Hasanbae0807/agentvouch (12 file ter-track; tanpa file
   rahasia — tidak ada key/.env di repo).
 
+## Fase 2 — FRONT-END + PAKET SUBMIT SELESAI (2026-11-18, lokal)
+
+- Front-end statis di `web/` (index.html + app.js + style.css; vanilla, tanpa
+  build step; ethers v6 via CDN jsdelivr):
+  - Connect wallet standar `window.ethereum` (MetaMask / Binance Web3 Wallet);
+    TANPA login QR, tanpa pengumpulan seed/private key, tanpa janji imbal
+    hasil, tanpa branding meniru Binance/BNB (footer menyatakan proyek
+    independen).
+  - Menampilkan: status Agent ID wallet terhubung (`isAgent` + `handleOf`
+    dari kontrak), `uniqueInteractors`, `totalEndorsementsMade`, profil per
+    handle (`ownerOfHandle` via registry + `getProfileByHandle` +
+    `totalEndorsementCount`), form `registerProfile`, form
+    `endorse`/`revokeEndorsement`, dan daftar endorsement terbaru dari event
+    `Endorsed` (queryFilter ±200.000 blok terakhir).
+  - Semua tx ditulis user dari wallet-nya sendiri; halaman hanya menyiapkan
+    tx via provider. Banner UI menegaskan: "No funds, no approvals —
+    endorsements only." Read publik via https://bsc-dataseed.binance.org/.
+    Footer: alamat kontrak + link Sourcify + link repo GitHub.
+  - ABI di app.js disalin verbatim dari artifact
+    `out/AgentVouch.sol/AgentVouch.json`.
+- Hasil uji lokal (2026-11-18):
+  - `node --check web/app.js` — OK.
+  - Cek fungsi: semua fungsi AgentVouch yang dipanggil app.js ADA di ABI
+    artifact (endorse, registerProfile, revokeEndorsement, getProfileByHandle,
+    handleOf, isAgent, totalEndorsementCount, totalEndorsementsMade,
+    uniqueInteractors; `queryFilter` adalah method ethers.js, bukan fungsi
+    kontrak). Event filter `Endorsed` ada di ABI. Fungsi registry yang
+    dipanggil (`ownerOfHandle`) ada di interface terverifikasi.
+  - HTML: semua id yang dipakai JS ada di index.html; tag seimbang, tanpa
+    error parser.
+  - Smoke test read-only live (cast call ke BSC): `uniqueInteractors()` = 0,
+    `totalEndorsementsMade()` = 0, `handleOf(wallet tuan)` = "begundaall" —
+    persis yang akan dirender front-end.
+- Cara menjalankan front-end: sajikan folder `web/` via static server lokal
+  (mis. `python3 -m http.server -d web`) atau aktifkan GitHub Pages dari repo
+  agentvouch (langkah lengkap di SUBMIT-PACKET.md — Pages BELUM diaktifkan).
+- `SUBMIT-PACKET.md` — draf isian form submit lengkap (nama, kategori
+  Innovation, alamat kontrak, deskripsi Agent ID ±150 kata Inggris, catatan
+  hosting, checklist). Alamat penerima hadiah = wallet agentic, bertanda
+  menunggu konfirmasi final tuan.
+- `X-POST-DRAFT.md` — 2 draf post X Community Promotion (hashtag
+  #BinanceWalletHackathon + #AgenticWallet + link repo). DRAF saja, belum
+  diposting.
+
 ## Langkah sisa fase 2
 
-1. Front-end statis (halaman profil + endorse; koneksi wallet standar, TANPA
-   login QR; semua tx dikonfirmasi user di wallet-nya sendiri).
-2. Submit proyek ke Binance sebelum **9 Des 2026 15:00 WIB** (nama, website,
-   alamat kontrak `0x50c3ec6393e62090a349b717247890ac94e8f639`, deskripsi
-   pemakaian Agent ID) — butuh konfirmasi nama final + alamat penerima hadiah.
-3. Strategi ≥30 interaksi Agent ID (pengumuman X + hashtag resmi, ajakan
-   endorse timbal balik, pantau `uniqueInteractors` on-chain).
+1. ~~Front-end statis~~ — SELESAI (lokal, lihat bagian di atas). Belum
+   di-push ke GitHub & belum di-hosting (push menyusul setelah konfirmasi
+   nama final dari tuan).
+2. Konfirmasi tuan: nama final "AgentVouch" + alamat penerima hadiah →
+   aktifkan GitHub Pages → submit proyek ke Binance sebelum
+   **9 Des 2026 15:00 WIB** (pakai SUBMIT-PACKET.md).
+3. Strategi ≥30 interaksi Agent ID (posting X dari akun tuan — draf di
+   X-POST-DRAFT.md — + ajakan endorse timbal balik di komunitas Agent ID /
+   SPACE ID, pantau `uniqueInteractors` on-chain).
 4. (Opsional) Verifikasi native BscScan bila API key/akun tersedia.

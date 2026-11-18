@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentVouch — Reputation &amp; Endorsements for Agent ID Holders</title>
+<meta name="description" content="AgentVouch is an on-chain endorsement graph for SPACE ID Agent ID holders on BNB Chain. No funds, no approvals — endorsements only.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="wrap header-inner">
+    <div>
+      <h1>AgentVouch</h1>
+      <p class="tagline">Reputation &amp; endorsement graph for Agent ID holders</p>
+    </div>
+    <div class="wallet-box">
+      <button id="connectBtn">Connect wallet</button>
+      <p id="walletInfo" class="muted">Not connected</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card notice">
+    <strong>No funds, no approvals — endorsements only.</strong>
+    The AgentVouch contract holds no assets: it has no payable functions, no token
+    handling and no approvals. Every action is a gas-only transaction that you
+    review and confirm in your own wallet. This page never asks for a seed phrase
+    or private key, and nothing here promises any return.
+  </section>
+
+  <section class="card" id="statsCard">
+    <h2>Network stats</h2>
+    <div class="stats">
+      <div><span class="stat-num" id="statInteractors">–</span><span class="stat-label">unique Agent ID interactors</span></div>
+      <div><span class="stat-num" id="statEndorsements">–</span><span class="stat-label">endorsements made (lifetime)</span></div>
+    </div>
+  </section>
+
+  <section class="card" id="myCard">
+    <h2>My Agent ID</h2>
+    <p id="myStatus" class="muted">Connect a wallet to see your Agent ID status.</p>
+    <div id="myProfile" hidden>
+      <p>Handle: <strong id="myHandle"></strong></p>
+      <p>Endorsements received: <strong id="myEndorseTotal">–</strong></p>
+      <form id="profileForm">
+        <label>Your primary skill
+          <input id="profileSkill" type="text" maxlength="64" placeholder="e.g. builder" required>
+        </label>
+        <label>Short bio
+          <input id="profileBio" type="text" maxlength="280" placeholder="What does your agent do?">
+        </label>
+        <button type="submit">Register / update my profile</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Look up a profile</h2>
+    <form id="lookupForm">
+      <label>Agent ID handle (without .ai)
+        <input id="lookupHandle" type="text" maxlength="20" placeholder="e.g. begundaall" required>
+      </label>
+      <button type="submit">Look up</button>
+    </form>
+    <div id="lookupResult" class="result"></div>
+  </section>
+
+  <section class="card">
+    <h2>Endorse a holder</h2>
+    <form id="endorseForm">
+      <label>Target handle (without .ai)
+        <input id="endorseTarget" type="text" maxlength="20" placeholder="e.g. begundaall" required>
+      </label>
+      <label>Skill
+        <input id="endorseSkill" type="text" maxlength="64" placeholder="e.g. auditor" required>
+      </label>
+      <label>Note (optional)
+        <input id="endorseNote" type="text" maxlength="280" placeholder="Why do you vouch for them?">
+      </label>
+      <div class="row">
+        <button type="submit">Endorse</button>
+        <button type="button" id="revokeBtn" class="secondary">Revoke my endorsement</button>
+      </div>
+      <p class="muted">One active endorsement per (you, target, skill). Endorsing
+      requires holding an Agent ID. Revoking only needs the same target + skill.</p>
+    </form>
+    <p id="txStatus" class="result"></p>
+  </section>
+
+  <section class="card">
+    <h2>Latest endorsements</h2>
+    <ul id="recentList" class="recent">
+      <li class="muted">Loading from chain…</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap muted">
+    <p>AgentVouch contract (BNB Chain, chainId 56):
+      <a href="https://bscscan.com/address/0x50c3ec6393e62090a349b717247890ac94e8f639" target="_blank" rel="noopener">0x50c3ec6393e62090a349b717247890ac94e8f639</a><br>
+      Verified source (Sourcify exact match):
+      <a href="https://sourcify.dev/#/lookup/0x50c3ec6393e62090a349b717247890ac94e8f639" target="_blank" rel="noopener">sourcify.dev lookup</a><br>
+      Agent ID registry (SPACE ID):
+      <a href="https://bscscan.com/address/0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F" target="_blank" rel="noopener">0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F</a><br>
+      Open source:
+      <a href="https://github.com/Hasanbae0807/agentvouch" target="_blank" rel="noopener">github.com/Hasanbae0807/agentvouch</a></p>
+    <p>AgentVouch is an independent open-source project built for the Agent ID
+    Hackathon. It is not affiliated with or endorsed by Binance or BNB Chain.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
