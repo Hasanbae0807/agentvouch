@@ -148,8 +148,8 @@ Detail riset & alasan lengkap: `docs/RESEARCH-DESIGN.md`.
     `totalEndorsementsMade()` = 0, `handleOf(wallet tuan)` = "begundaall" —
     persis yang akan dirender front-end.
 - Cara menjalankan front-end: sajikan folder `web/` via static server lokal
-  (mis. `python3 -m http.server -d web`) atau aktifkan GitHub Pages dari repo
-  agentvouch (langkah lengkap di SUBMIT-PACKET.md — Pages BELUM diaktifkan).
+  (mis. `python3 -m http.server -d web`) atau via GitHub Pages dari repo
+  agentvouch — Pages SUDAH LIVE (lihat bagian GO-LIVE di bawah).
 - `SUBMIT-PACKET.md` — draf isian form submit lengkap (nama, kategori
   Innovation, alamat kontrak, deskripsi Agent ID ±150 kata Inggris, catatan
   hosting, checklist). Alamat penerima hadiah = wallet agentic, bertanda
@@ -160,13 +160,44 @@ Detail riset & alasan lengkap: `docs/RESEARCH-DESIGN.md`.
 
 ## Langkah sisa fase 2
 
-1. ~~Front-end statis~~ — SELESAI (lokal, lihat bagian di atas). Belum
-   di-push ke GitHub & belum di-hosting (push menyusul setelah konfirmasi
-   nama final dari tuan).
+1. ~~Front-end statis~~ — SELESAI dan SUDAH TAYANG (push + GitHub Pages
+   LIVE, lihat bagian GO-LIVE di bawah).
 2. Konfirmasi tuan: nama final "AgentVouch" + alamat penerima hadiah →
-   aktifkan GitHub Pages → submit proyek ke Binance sebelum
-   **9 Des 2026 15:00 WIB** (pakai SUBMIT-PACKET.md).
+   submit proyek ke Binance sebelum **9 Des 2026 15:00 WIB**
+   (pakai SUBMIT-PACKET.md; website untuk form =
+   https://hasanbae0807.github.io/agentvouch/).
 3. Strategi ≥30 interaksi Agent ID (posting X dari akun tuan — draf di
    X-POST-DRAFT.md — + ajakan endorse timbal balik di komunitas Agent ID /
    SPACE ID, pantau `uniqueInteractors` on-chain).
 4. (Opsional) Verifikasi native BscScan bila API key/akun tersedia.
+
+## Fase 2 — GO-LIVE SELESAI (2026-11-18 ~20:11–20:16 WIB, perintah tuan "Gas")
+
+- Push ke `main` repo https://github.com/Hasanbae0807/agentvouch via
+  gh_push.py: commit remote **`bef432d9daea8cd9c7d938d40b1ae4e94bf72413`**
+  (17 file: seluruh proyek fase 1+2 termasuk `web/index.html`,
+  `web/app.js`, `web/style.css`, `SUBMIT-PACKET.md`, `X-POST-DRAFT.md`,
+  `STATUS.md`). Terverifikasi via API: folder `web/` di main memuat persis
+  app.js/index.html/style.css; SUBMIT-PACKET.md & X-POST-DRAFT.md ada.
+- GitHub Pages: branch khusus **`gh-pages`** dibuat (ref dibuat via Git
+  Data API menunjuk commit main, lalu isinya diganti tree bersih berisi
+  HANYA 3 file web/ di root branch) — commit gh-pages
+  **`fdd14e129b573d334eeb4bb112183a642810d12f`**. Membuat branch gh-pages
+  otomatis mengaktifkan Pages (build_type legacy, source gh-pages `/`),
+  jadi POST /pages tidak diperlukan. Build terakhir (id 1380987124)
+  status **built**, error null.
+  - Catatan teknis: percobaan pertama push gh-pages gagal di tahap seed
+    helper — persisnya PUT contents dengan branch yang belum ada menjawab
+    404 `{"message":"Branch gh-pages not found",...}`; diatasi dengan
+    membuat ref gh-pages lebih dulu via POST /git/refs.
+- **URL LIVE: https://hasanbae0807.github.io/agentvouch/** — terverifikasi
+  2026-11-18 13:12 UTC (±20:12 WIB): halaman termuat (judul "AgentVouch —
+  Reputation & Endorsements for Agent ID Holders", banner "No funds, no
+  approvals — endorsements only", seksi Network stats / Look up a profile /
+  Endorse a holder / Latest endorsements). `app.js` ikut ter-serve penuh
+  dan memuat `AGENTVOUCH_ADDRESS =
+  "0x50c3ec6393e62090a349b717247890ac94e8f639"`; index.html memuat alamat
+  kontrak yang sama (footer, link BscScan + Sourcify) dan
+  `<script src="app.js"></script>`.
+- TIDAK ada submit ke Binance, TIDAK ada posting X, TIDAK ada tanda
+  tangan/deploy apa pun di run go-live ini.
